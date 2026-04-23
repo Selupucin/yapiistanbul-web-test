@@ -9,6 +9,16 @@ import { SiteShell } from "@/components/site-shell";
 import { localizedContent, localizedTitle } from "@/lib/content";
 import { dateLocale, getLang, t } from "@/lib/i18n";
 
+function summarize(text: string, max = 160) {
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= max) return clean;
+  const cut = clean.slice(0, max);
+  const lastBoundary = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("! "), cut.lastIndexOf("? "));
+  if (lastBoundary > max * 0.5) return cut.slice(0, lastBoundary + 1);
+  const lastSpace = cut.lastIndexOf(" ");
+  return (lastSpace > 0 ? cut.slice(0, lastSpace) : cut) + "…";
+}
+
 export async function generateMetadata(
   context: { params: Promise<{ slug: string }> }
 ): Promise<Metadata> {
@@ -20,7 +30,7 @@ export async function generateMetadata(
 
   return {
     title: blog.title,
-    description: blog.content.slice(0, 150),
+    description: summarize(blog.content, 160),
   };
 }
 
@@ -37,13 +47,19 @@ export default async function BlogDetailPage(
     <SiteShell>
       <PageSeoSchema
         title={localizedTitle(blog, lang)}
-        description={localizedContent(blog, lang).slice(0, 150)}
+        description={summarize(localizedContent(blog, lang), 160)}
         path={`/blog/${blog.slug}`}
         breadcrumbs={[
           { name: t(lang, "Ana Sayfa", "Home"), path: "/" },
           { name: "Blog", path: "/blog" },
           { name: localizedTitle(blog, lang), path: `/blog/${blog.slug}` },
         ]}
+        blogPosting={{
+          headline: localizedTitle(blog, lang),
+          datePublished: new Date(blog.createdAt).toISOString(),
+          dateModified: blog.updatedAt ? new Date(blog.updatedAt).toISOString() : undefined,
+          image: blog.coverImage || undefined,
+        }}
       />
 
       <Breadcrumb

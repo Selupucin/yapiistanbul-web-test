@@ -7,8 +7,22 @@
   --foreground: #0b1f43;
   --muted: #5f6f8a;
   --line: #dbe4f4;
-  --navy: #0c2c64;
-  --navy-soft: #173f86;
+
+  /* Navy scale (brand) */
+  --navy-50: #eaf2ff;
+  --navy-100: #d8e5f8;
+  --navy-200: #c5d8f5;
+  --navy-300: #9bb8e6;
+  --navy-400: #5f86c5;
+  --navy-500: #1f4f9d;
+  --navy-600: #173f86;
+  --navy-700: #123f80;
+  --navy-800: #0c2c64;
+  --navy-900: #04173f;
+
+  /* Aliases (legacy) */
+  --navy: var(--navy-800);
+  --navy-soft: var(--navy-600);
 }
 
 @theme inline {
@@ -28,6 +42,13 @@ button,
 [role="button"],
 summary {
   cursor: pointer;
+}
+
+/* Visible focus ring for keyboard users (a11y) */
+:where(a, button, [role="button"], summary, input, select, textarea):focus-visible {
+  outline: 2px solid var(--navy-800);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
 button:not(:disabled),
@@ -133,6 +154,10 @@ h3 {
 }
 
 .link-hover:hover::after {
+  width: 100%;
+}
+
+.link-hover:focus-visible::after {
   width: 100%;
 }
 

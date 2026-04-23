@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import { SiteShell } from "@/components/site-shell";
 import { ProjectVisitLink } from "@/components/project-visit-link";
 import { Breadcrumb } from "@/components/breadcrumb";
@@ -7,6 +8,7 @@ import { PageSeoSchema } from "@/components/page-seo-schema";
 import { localizedName } from "@/lib/content";
 import { getLang, t } from "@/lib/i18n";
 import { safeProjects } from "@/lib/data";
+import { slugify } from "@/lib/slug";
 
 export const metadata: Metadata = {
   title: "Projeler",
@@ -74,10 +76,10 @@ export default async function ProjectsPage() {
                       ? "https://images.unsplash.com/photo-1460574283810-2aab119d8511?w=1000&q=85"
                       : "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=1000&q=85"
                   }
-                  alt={project.name}
+                  alt={`${project.name} — Yapı İstanbul projesi görseli`}
                   fill
+                  sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
                   className="object-cover"
-                  unoptimized
                 />
               </div>
               <div className="p-4">
@@ -86,13 +88,21 @@ export default async function ProjectsPage() {
               <p className="mt-3 text-sm text-[#5f7395]">
                 {t(lang, "Proje detayları ayrı alt domainde yayınlanır. Aşağıdaki bağlantı ile proje sitesine doğrudan erişebilirsiniz.", "Project details are published on a dedicated subdomain. Use the link below to access the project website directly.")}
               </p>
-              <ProjectVisitLink
-                href={project.link}
-                projectName={localizedName(project, lang)}
-                className="btn-hover mt-4 inline-block rounded-full navy-gradient px-5 py-2 text-sm font-semibold text-white"
-              >
-                {t(lang, "Proje sitesine git", "Visit project site")}
-              </ProjectVisitLink>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <Link
+                  href={`/projects/${slugify(project.name)}`}
+                  className="btn-hover inline-block rounded-full border border-[#c5d8f5] px-5 py-2 text-sm font-semibold text-[#0c2c64] hover:bg-[#edf4ff]"
+                >
+                  {t(lang, "Detayları gör", "View details")}
+                </Link>
+                <ProjectVisitLink
+                  href={project.link}
+                  projectName={localizedName(project, lang)}
+                  className="btn-hover inline-block rounded-full navy-gradient px-5 py-2 text-sm font-semibold text-white"
+                >
+                  {t(lang, "Proje sitesine git", "Visit project site")}
+                </ProjectVisitLink>
+              </div>
               </div>
             </article>
           ))}

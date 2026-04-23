@@ -31,6 +31,8 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
           { name: t(lang, "Ana Sayfa", "Home"), path: "/" },
           { name: t(lang, "İletişim", "Contact"), path: "/contact" },
         ]}
+        isLocalBusiness
+        contact={{ phone: contact.phone, email: contact.email, address: contact.address }}
       />
 
       <Breadcrumb homeLabel={t(lang, "Ana Sayfa", "Home")} items={[{ href: "/contact", label: t(lang, "İletişim", "Contact") }]} />
@@ -94,7 +96,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
               {t(lang, "Kısa proje özetinizi bırakın; ekibimiz size geri dönüş yapsın.", "Leave a short summary of your project and our team will get back to you.")}
             </p>
             {isSent ? (
-              <div className="mt-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+              <div className="mt-4 rounded-2xl border border-[#cdddf5] bg-[#eff5ff] px-4 py-3 text-sm text-[#0c2c64]">
                 {t(lang, "Talebiniz alındı. En kısa sürede sizinle iletişime geçeceğiz.", "Your request has been received. We will contact you shortly.")}
               </div>
             ) : null}
@@ -103,7 +105,8 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
               <input
                 type="text"
                 name="fullName"
-                placeholder="Ad ve Soyad"
+                placeholder={t(lang, "Ad ve Soyad", "Full Name")}
+                aria-label={t(lang, "Ad ve Soyad", "Full Name")}
                 className="w-full rounded-2xl border border-[#d8e5f8] bg-white px-4 py-3 text-sm text-[#0c2c64] placeholder-[#9fa9c1] outline-none transition focus:border-[#0c2c64] focus:shadow-[0_0_0_4px_rgba(12,44,100,0.08)]"
                 required
               />
@@ -111,6 +114,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
                 type="email"
                 name="email"
                 placeholder={t(lang, "Email Adresiniz", "Your Email")}
+                aria-label={t(lang, "Email Adresiniz", "Your Email")}
                 className="w-full rounded-2xl border border-[#d8e5f8] bg-white px-4 py-3 text-sm text-[#0c2c64] placeholder-[#9fa9c1] outline-none transition focus:border-[#0c2c64] focus:shadow-[0_0_0_4px_rgba(12,44,100,0.08)]"
                 required
               />

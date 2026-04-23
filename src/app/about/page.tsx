@@ -90,7 +90,7 @@ export default async function AboutPage() {
             },
           ].map((item) => (
             <article key={item.title} className="group relative min-h-80 overflow-hidden rounded-3xl border border-[#cfddf4] shadow-[0_14px_30px_rgba(10,44,100,0.14)]">
-              <Image src={item.image} alt={item.title} fill className="object-cover transition duration-500 group-hover:scale-105" unoptimized />
+              <Image src={item.image} alt={item.title} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,19,44,0.18)_0%,rgba(8,30,74,0.6)_45%,rgba(8,30,74,0.9)_100%)]" />
               <div className="absolute inset-x-0 bottom-0 p-6 text-white">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/70">Yapı İstanbul</p>

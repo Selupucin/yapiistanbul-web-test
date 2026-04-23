@@ -74,8 +74,8 @@ export default async function Home() {
             alt="Istanbul mimari gorunum"
             fill
             priority
+            sizes="100vw"
             className="object-cover"
-            unoptimized
           />
           <div className="absolute inset-0 bg-[linear-gradient(120deg,rgba(3,15,40,0.84)_0%,rgba(12,44,100,0.74)_45%,rgba(9,37,86,0.55)_100%)]" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_22%_30%,rgba(120,191,255,0.22),transparent_40%)]" />
@@ -151,7 +151,7 @@ export default async function Home() {
           ].map((item) => (
             <article key={item.title} className="group relative overflow-hidden rounded-3xl border border-[#d9e5f8] shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
               <div className="relative h-[320px]">
-                <Image src={item.image} alt={item.title} fill className="object-cover transition duration-500 group-hover:scale-105" unoptimized />
+                <Image src={item.image} alt={item.title} fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,17,44,0.12)_0%,rgba(7,27,68,0.55)_45%,rgba(8,30,74,0.88)_100%)]" />
                 <div className="absolute inset-x-0 bottom-0 p-6 text-white">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/75">Yapı İstanbul</p>
@@ -203,16 +203,16 @@ export default async function Home() {
                         ? "https://images.unsplash.com/photo-1460574283810-2aab119d8511?w=1200&q=85"
                         : "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=1200&q=85"
                     }
-                    alt={project.name}
+                    alt={`${project.name} — Yapı İstanbul projesi`}
                     fill
+                    sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
                     className="object-cover"
-                    unoptimized
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-[#061a45]/75 to-transparent" />
                 </div>
                 <div className="p-4">
-                  <h3 className="line-clamp-1 font-semibold text-[#0c2c64] group-hover:text-[#1a4f9d]">{project.name}</h3>
-                  <p className="mt-1 text-sm text-[#4f6080] line-clamp-2">
+                  <h3 className="line-clamp-2 sm:line-clamp-1 font-semibold text-[#0c2c64] group-hover:text-[#1a4f9d]">{project.name}</h3>
+                  <p className="mt-1 text-sm text-[#4f6080] line-clamp-2 sm:line-clamp-3">
                     {t(lang, "Proje detaylari icin baglantiya tiklayin.", "Click the link for project details.")}
                   </p>
                 </div>
@@ -226,7 +226,6 @@ export default async function Home() {
         <div className="md:col-span-3">
           <p className="text-center text-xs font-semibold uppercase tracking-[0.18em] text-[#4b6692]">{t(lang, "Sayılarla Güç", "Strength in Numbers")}</p>
         </div>
-        <div className="absolute" />
         <div className="contents">
           {[
             { value: "50+", label: t(lang, "Tamamlanmış Proje", "Completed Projects") },
@@ -271,7 +270,7 @@ export default async function Home() {
           ].map((area) => (
             <article key={area.title} className="group relative overflow-hidden rounded-3xl border border-[#d9e5f8] shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
               <div className="relative h-[320px]">
-                <Image src={area.image} alt={area.title} fill className="object-cover transition duration-500 group-hover:scale-105" unoptimized />
+                <Image src={area.image} alt={area.title} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover transition duration-500 group-hover:scale-105" />
                 <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,17,44,0.12)_0%,rgba(7,27,68,0.55)_45%,rgba(8,30,74,0.88)_100%)]" />
                 <div className="absolute inset-x-0 bottom-0 p-6">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-white/75">Yapı İstanbul</p>
@@ -299,18 +298,19 @@ export default async function Home() {
                 <div className="relative h-36">
                   <Image
                     src={blog.coverImage || "https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=85"}
-                    alt={blog.title}
+                    alt={`${blog.title} — Yapı İstanbul blog`}
                     fill
+                    sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
                     className="object-cover"
-                    unoptimized
+                    unoptimized={!!blog.coverImage}
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-[#04173f]/80 via-[#0a2b66]/25 to-transparent" />
                 </div>
                 <div className="p-4">
-                  <h3 className="line-clamp-1 font-semibold text-[#0c2c64] group-hover:text-[#1a4f9d]">
+                  <h3 className="line-clamp-2 sm:line-clamp-1 font-semibold text-[#0c2c64] group-hover:text-[#1a4f9d]">
                     {blog.title}
                   </h3>
-                  <p className="mt-1 text-sm text-[#4f6080] line-clamp-2">
+                  <p className="mt-1 text-sm text-[#4f6080] line-clamp-2 sm:line-clamp-3">
                     {blog.content.substring(0, 150)}
                   </p>
                 </div>

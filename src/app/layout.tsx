@@ -20,15 +20,15 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://yapiistanbul.com"),
     title: {
-      default: "Yapi Istanbul",
-      template: "%s | Yapi Istanbul",
+      default: "Yapı İstanbul",
+      template: "%s | Yapı İstanbul",
     },
-    description: "Yapi Istanbul premium residential and commercial project development firm.",
+    description: "Yapı İstanbul — İstanbul odaklı premium konut ve ticari proje geliştirme firması.",
     keywords: [
-      "Yapi Istanbul",
-      "insaat firmasi",
+      "Yapı İstanbul",
+      "inşaat firması",
       "istanbul projeleri",
-      "kentsel proje gelistirme",
+      "kentsel proje geliştirme",
       "premium konut",
     ],
     alternates: {
@@ -38,15 +38,15 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       type: "website",
       locale: "tr_TR",
-      siteName: "Yapi Istanbul",
-      title: "Yapi Istanbul",
-      description: "Istanbul odakli premium konut ve ticari proje gelistirme firmasi.",
+      siteName: "Yapı İstanbul",
+      title: "Yapı İstanbul",
+      description: "İstanbul odaklı premium konut ve ticari proje geliştirme firması.",
       url: "/",
     },
     twitter: {
       card: "summary_large_image",
-      title: "Yapi Istanbul",
-      description: "Istanbul odakli premium konut ve ticari proje gelistirme firmasi.",
+      title: "Yapı İstanbul",
+      description: "İstanbul odaklı premium konut ve ticari proje geliştirme firması.",
     },
   };
 }
