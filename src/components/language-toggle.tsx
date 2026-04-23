@@ -1,15 +1,18 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { SiteLang } from "@/lib/i18n";
 
 export function LanguageToggle({ lang }: { lang: SiteLang }) {
   const [active, setActive] = useState<SiteLang>(lang);
+  const router = useRouter();
 
   const setLang = (next: SiteLang) => {
+    if (next === active) return;
     setActive(next);
     document.cookie = `site_lang=${next}; path=/; max-age=31536000; samesite=lax`;
-    window.location.reload();
+    router.refresh();
   };
 
   return (
