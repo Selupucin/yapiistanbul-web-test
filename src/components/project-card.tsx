@@ -58,7 +58,7 @@ export function ProjectCard({
       href={`/projects/${slug}`}
       className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#dbe5f4] bg-white shadow-sm transition hover:-translate-y-1 hover:border-[#1a4f9d] hover:shadow-lg"
     >
-      <div className={`relative w-full ${variant === "compact" ? "h-40" : "h-48"}`}>
+      <div className={`relative w-full overflow-hidden ${variant === "compact" ? "h-40" : "h-48"}`}>
         <Image
           src={cover}
           alt={`${name} — Yapı İstanbul projesi görseli`}
