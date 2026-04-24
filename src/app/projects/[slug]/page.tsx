@@ -8,6 +8,7 @@ import { PageSeoSchema } from "@/components/page-seo-schema";
 import { SiteShell } from "@/components/site-shell";
 import { ProjectGallery } from "@/components/project-gallery";
 import { ProjectVideo } from "@/components/project-video";
+import { FloorPlansSection, type FloorPlan } from "@/components/floor-plans-section";
 import {
   localizedDescription,
   localizedLocation,
@@ -293,6 +294,17 @@ export default async function ProjectDetailPage(context: {
                 </dl>
               </div>
             ) : null}
+
+            <FloorPlansSection
+              plans={(project.floorPlans || []) as FloorPlan[]}
+              title={t(lang, "Kat Planları", "Floor Plans")}
+              selectLabel={t(lang, "Kat seçin:", "Select floor:")}
+              emptyLabel={t(
+                lang,
+                "Bu proje için henüz kat planı paylaşılmadı.",
+                "No floor plans have been shared for this project yet."
+              )}
+            />
           </aside>
         </section>
 
