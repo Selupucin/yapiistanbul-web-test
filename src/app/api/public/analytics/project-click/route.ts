@@ -14,11 +14,14 @@ function normalizeBodyDeviceType(value: unknown) {
   return undefined;
 }
 
-function getReferrerSource(referrer: string) {
+function getReferrerSource(referrer: string, currentHost: string) {
   if (!referrer) return "direct";
   try {
     const host = new URL(referrer).hostname.replace(/^www\./, "");
-    return host || "direct";
+    if (!host) return "direct";
+    const normalizedCurrent = (currentHost || "").replace(/^www\./, "");
+    if (normalizedCurrent && host === normalizedCurrent) return "direct";
+    return host;
   } catch {
     return "direct";
   }
@@ -31,11 +34,12 @@ export const POST = async (request: Request) =>
     const projectName = typeof body.projectName === "string" ? body.projectName : "Isimsiz Proje";
     const userAgent = request.headers.get("user-agent") || "";
     const referrer = request.headers.get("referer") || "";
+    const host = request.headers.get("host") || "";
 
     await trackProjectClick(projectName, {
       path,
       deviceType: normalizeBodyDeviceType(body.deviceType) || getDeviceType(userAgent),
-      referrerSource: getReferrerSource(referrer),
+      referrerSource: getReferrerSource(referrer, host),
     });
 
     return { ok: true };

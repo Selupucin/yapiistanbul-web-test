@@ -9,6 +9,7 @@ import { SiteShell } from "@/components/site-shell";
 import { ProjectGallery } from "@/components/project-gallery";
 import { ProjectVideo } from "@/components/project-video";
 import { FloorPlansSection, type FloorPlan } from "@/components/floor-plans-section";
+import { ProjectClickTracker } from "@/components/project-click-tracker";
 import {
   localizedDescription,
   localizedLocation,
@@ -112,6 +113,7 @@ export default async function ProjectDetailPage(context: {
 
   return (
     <SiteShell>
+      <ProjectClickTracker projectName={project.name} slug={slug} />
       <PageSeoSchema
         title={name}
         description={
