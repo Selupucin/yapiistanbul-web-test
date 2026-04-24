@@ -6,7 +6,7 @@ export type SiteLang = "en" | "tr";
 export const getLang = cache(async (): Promise<SiteLang> => {
   const store = await cookies();
   const lang = store.get("site_lang")?.value;
-  return lang === "tr" ? "tr" : "en";
+  return lang === "en" ? "en" : "tr";
 });
 
 export const t = (lang: SiteLang, tr: string, en: string) => {
