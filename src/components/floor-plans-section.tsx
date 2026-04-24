@@ -18,6 +18,7 @@ export function FloorPlansSection({
 }) {
   const [selected, setSelected] = useState<string>(plans[0]?.label || "");
   const [zoomed, setZoomed] = useState(false);
+  const [aspect, setAspect] = useState<number>(4 / 3);
 
   useEffect(() => {
     if (!plans.length) return;
@@ -74,7 +75,8 @@ export function FloorPlansSection({
       <button
         type="button"
         onClick={() => setZoomed(true)}
-        className="group relative mt-4 block aspect-[4/3] w-full overflow-hidden rounded-2xl border border-[#e5edf9] bg-[#f8fbff] transition hover:border-[#1a4f9d]"
+        className="group relative mt-4 block w-full overflow-hidden rounded-2xl border border-[#e5edf9] bg-white transition hover:border-[#1a4f9d]"
+        style={{ aspectRatio: String(aspect) }}
         aria-label={`${active.label} — büyüt`}
       >
         <Image
@@ -84,7 +86,13 @@ export function FloorPlansSection({
           fill
           sizes="(min-width: 1024px) 35vw, 100vw"
           unoptimized={active.image.startsWith("data:")}
-          className="object-contain transition duration-300 group-hover:scale-[1.02]"
+          onLoad={(e) => {
+            const img = e.currentTarget as HTMLImageElement;
+            if (img.naturalWidth && img.naturalHeight) {
+              setAspect(img.naturalWidth / img.naturalHeight);
+            }
+          }}
+          className="object-cover transition duration-300 group-hover:scale-[1.02]"
         />
         <span className="absolute right-2 top-2 rounded-full bg-white/90 px-2 py-1 text-[10px] font-semibold text-[#0c2c64] opacity-0 backdrop-blur transition group-hover:opacity-100">
           ⛶ Büyüt
