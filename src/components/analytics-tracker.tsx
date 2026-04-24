@@ -1,7 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getCookiePreferences, type CookiePreferences } from "./cookie-consent";
 
 function detectDeviceType(): "mobile" | "desktop" | "tablet" {
   const ua = (typeof navigator !== "undefined" ? navigator.userAgent : "").toLowerCase();
@@ -14,9 +15,21 @@ function detectDeviceType(): "mobile" | "desktop" | "tablet" {
 
 export function AnalyticsTracker() {
   const pathname = usePathname();
+  const [prefs, setPrefs] = useState<CookiePreferences | null>(null);
+
+  useEffect(() => {
+    setPrefs(getCookiePreferences());
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent<CookiePreferences>).detail;
+      if (detail) setPrefs(detail);
+    };
+    window.addEventListener("yi:consent-change", handler);
+    return () => window.removeEventListener("yi:consent-change", handler);
+  }, []);
 
   useEffect(() => {
     if (!pathname) return;
+    if (!prefs || !prefs.analytics) return;
 
     const body = JSON.stringify({ path: pathname, deviceType: detectDeviceType() });
     fetch("/api/public/analytics/pageview", {
@@ -25,7 +38,7 @@ export function AnalyticsTracker() {
       body,
       keepalive: true,
     }).catch(() => undefined);
-  }, [pathname]);
+  }, [pathname, prefs]);
 
   return null;
 }

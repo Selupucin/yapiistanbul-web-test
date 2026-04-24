@@ -4,6 +4,8 @@ import { getLang, t } from "@/lib/i18n";
 import { ScrollTopButton } from "@/components/scroll-top-button";
 import { AnalyticsTracker } from "@/components/analytics-tracker";
 import { SiteHeader } from "@/components/site-header";
+import { CookieConsent } from "@/components/cookie-consent";
+import { CookiePreferencesLink } from "@/components/cookie-preferences-link";
 import { safeContact, safeSettings } from "@/lib/data";
 
 export async function SiteShell({ children }: { children: React.ReactNode }) {
@@ -80,6 +82,7 @@ export async function SiteShell({ children }: { children: React.ReactNode }) {
               <li><Link href="/blog" className="link-hover">{blogLabel}</Link></li>
               <li><Link href="/privacy-policy" className="link-hover">{t(lang, "Gizlilik Politikası", "Privacy Policy")}</Link></li>
               <li><Link href="/cookies-policy" className="link-hover">{t(lang, "Çerez Politikası", "Cookies Policy")}</Link></li>
+              <li><CookiePreferencesLink label={t(lang, "Çerez Tercihleri", "Cookie Preferences")} /></li>
             </ul>
           </div>
         </div>
@@ -89,6 +92,7 @@ export async function SiteShell({ children }: { children: React.ReactNode }) {
       </footer>
       <ScrollTopButton />
       <AnalyticsTracker />
+      <CookieConsent lang={lang} />
     </div>
   );
 }
