@@ -1,32 +1,37 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { SiteShell } from "@/components/site-shell";
-import { ProjectVisitLink } from "@/components/project-visit-link";
+import { listProjects } from "@repo/api";
 import { Breadcrumb } from "@/components/breadcrumb";
 import { PageSeoSchema } from "@/components/page-seo-schema";
-import { localizedName } from "@/lib/content";
+import { ProjectCard } from "@/components/project-card";
+import { SiteShell } from "@/components/site-shell";
 import { getLang, t } from "@/lib/i18n";
-import { safeProjects } from "@/lib/data";
-import { slugify } from "@/lib/slug";
 
 export const metadata: Metadata = {
-  title: "Projeler",
-  description: "Yapi Istanbul projeleri",
-  alternates: {
-    canonical: "/projects",
-  },
+  title: "Projelerimiz",
+  description:
+    "Yapı İstanbul'un geliştirdiği konut, ticari ve karma kullanımlı projeler.",
+  alternates: { canonical: "/projects" },
 };
 
 export default async function ProjectsPage() {
   const lang = await getLang();
-  const projects = await safeProjects();
+  let projects: Awaited<ReturnType<typeof listProjects>> = [];
+  try {
+    projects = await listProjects();
+  } catch {
+    projects = [];
+  }
 
   return (
     <SiteShell>
       <PageSeoSchema
-        title={t(lang, "Projeler", "Projects")}
-        description={t(lang, "Yapı İstanbul proje portföyünü inceleyin.", "Explore Yapi Istanbul's project portfolio.")}
+        title={t(lang, "Projelerimiz", "Our Projects")}
+        description={t(
+          lang,
+          "Yapı İstanbul tarafından geliştirilen tüm projeler.",
+          "All projects developed by Yapı İstanbul."
+        )}
         path="/projects"
         breadcrumbs={[
           { name: t(lang, "Ana Sayfa", "Home"), path: "/" },
@@ -34,100 +39,56 @@ export default async function ProjectsPage() {
         ]}
       />
 
-      <Breadcrumb homeLabel={t(lang, "Ana Sayfa", "Home")} items={[{ href: "/projects", label: t(lang, "Projeler", "Projects") }]} />
+      <Breadcrumb
+        homeLabel={t(lang, "Ana Sayfa", "Home")}
+        items={[{ href: "/projects", label: t(lang, "Projeler", "Projects") }]}
+      />
 
-      <section className="animate-fade-up rounded-3xl navy-gradient p-8 text-white sm:p-10">
-        <h1 className="text-4xl sm:text-5xl">{t(lang, "Projeler", "Projects")}</h1>
-        <p className="mt-3 max-w-2xl text-sm text-white/90 sm:text-base">
-          {t(lang, "Konut, karma kullanım ve ticari odaklı geliştirmelerden oluşan portföyümüz; net, güçlü ve lokasyonla uyumlu projelerden oluşur.", "Our portfolio spans residential, mixed-use, and commercial developments shaped by location and long-term value.")}
-        </p>
-      </section>
+      <section className="mx-auto max-w-6xl">
+        <header className="mb-8 text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#5f79a3]">
+            {t(lang, "Yapı İstanbul", "Yapi Istanbul")}
+          </p>
+          <h1 className="mt-2 text-3xl font-bold text-[#0c2c64] sm:text-4xl">
+            {t(lang, "Projelerimiz", "Our Projects")}
+          </h1>
+          <p className="mx-auto mt-3 max-w-2xl text-sm text-[#4f6080] sm:text-base">
+            {t(
+              lang,
+              "İstanbul'un farklı bölgelerinde geliştirdiğimiz konut ve karma kullanımlı projelerimizi keşfedin.",
+              "Discover our residential and mixed-use developments across various districts of Istanbul."
+            )}
+          </p>
+        </header>
 
-      <section className="animate-fade-up-delayed mt-6 grid gap-3 sm:grid-cols-3">
-        {[
-          {
-            title: t(lang, "Seçim Kriteri", "Selection Criteria"),
-            text: t(lang, "Projeleri lokasyon gücü, kullanım değeri ve uzun vadeli potansiyeline göre değerlendiriyoruz.", "We evaluate projects by location strength, usability, and long-term potential."),
-          },
-          {
-            title: t(lang, "Portföy Yapısı", "Portfolio Structure"),
-            text: t(lang, "Konut, karma kullanım ve ticari odaklı farklı yatırım senaryolarını birlikte sunuyoruz.", "We present residential, mixed-use, and commercial scenarios together."),
-          },
-          {
-            title: t(lang, "Erişim", "Access"),
-            text: t(lang, "Her proje kartından ilgili proje sitesine doğrudan geçiş sağlayabilirsiniz.", "Each project card provides direct access to its dedicated project site."),
-          },
-        ].map((item) => (
-          <article key={item.title} className="rounded-2xl border border-[#dce7f8] bg-white px-4 py-4 shadow-sm">
-            <p className="text-sm font-semibold text-[#0c2c64]">{item.title}</p>
-            <p className="mt-2 text-sm text-[#4c6790]">{item.text}</p>
-          </article>
-        ))}
-      </section>
-
-      <section className="mt-8 space-y-6">
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-          {projects.map((project, index) => (
-            <article key={String(project._id)} className="panel-soft overflow-hidden rounded-2xl p-0">
-              <div className="relative h-40 w-full">
-                <Image
-                  src={
-                    index % 2 === 0
-                      ? "https://images.unsplash.com/photo-1460574283810-2aab119d8511?w=1000&q=85"
-                      : "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=1000&q=85"
-                  }
-                  alt={`${project.name} — Yapı İstanbul projesi görseli`}
-                  fill
-                  sizes="(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover"
-                />
-              </div>
-              <div className="p-4">
-              <p className="text-xs tracking-widest text-[#6f84a8]">{t(lang, "YAPI İSTANBUL PROJESİ", "YAPI ISTANBUL PROJECT")}</p>
-              <h2 className="mt-2 text-xl section-title">{localizedName(project, lang)}</h2>
-              <p className="mt-3 text-sm text-[#5f7395]">
-                {t(lang, "Proje detayları ayrı alt domainde yayınlanır. Aşağıdaki bağlantı ile proje sitesine doğrudan erişebilirsiniz.", "Project details are published on a dedicated subdomain. Use the link below to access the project website directly.")}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <Link
-                  href={`/projects/${slugify(project.name)}`}
-                  className="btn-hover inline-block rounded-full border border-[#c5d8f5] px-5 py-2 text-sm font-semibold text-[#0c2c64] hover:bg-[#edf4ff]"
-                >
-                  {t(lang, "Detayları gör", "View details")}
-                </Link>
-                <ProjectVisitLink
-                  href={project.link}
-                  projectName={localizedName(project, lang)}
-                  className="btn-hover inline-block rounded-full navy-gradient px-5 py-2 text-sm font-semibold text-white"
-                >
-                  {t(lang, "Proje sitesine git", "Visit project site")}
-                </ProjectVisitLink>
-              </div>
-              </div>
-            </article>
-          ))}
-        </div>
-
-        {projects.length === 0 && (
-          <div className="panel-soft rounded-2xl p-6 text-sm text-[#5c7092]">
-            {t(lang, "Henüz proje kaydı eklenmedi. Admin panelinden yeni proje ekleyebilirsiniz.", "No projects have been added yet. You can add a new project from the admin panel.")}
+        {projects.length === 0 ? (
+          <div className="rounded-3xl border border-dashed border-[#cdd9ee] bg-white p-10 text-center">
+            <p className="text-[#4f6080]">
+              {t(
+                lang,
+                "Yakında daha fazla proje paylaşacağız.",
+                "More projects will be shared soon."
+              )}
+            </p>
+            <Link
+              href="/contact"
+              className="mt-5 inline-block rounded-full bg-[#0c2c64] px-5 py-2 text-sm font-semibold text-white hover:bg-[#1a4f9d]"
+            >
+              {t(lang, "Bize ulaşın", "Contact us")}
+            </Link>
+          </div>
+        ) : (
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project, index) => (
+              <ProjectCard
+                key={project._id}
+                project={project}
+                lang={lang}
+                index={index}
+              />
+            ))}
           </div>
         )}
-      </section>
-
-      <section className="mt-8 rounded-3xl border border-[#dbe7f8] bg-[#f8fbff] p-7">
-        <h2 className="text-3xl section-title">{t(lang, "Portföy Değerlendirme Yaklaşımı", "Portfolio Evaluation Approach")}</h2>
-        <div className="mt-5 grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-[#dfebfb] bg-white p-4 text-sm text-[#5a6f92]">
-            {t(lang, "Pazar ihtiyacı ve lokasyon bağlantıları", "Market demand and location connectivity")}
-          </div>
-          <div className="rounded-2xl border border-[#dfebfb] bg-white p-4 text-sm text-[#5a6f92]">
-            {t(lang, "Mimari kalite, teknik uygulanabilirlik ve maliyet dengesi", "Architectural quality, technical feasibility, and cost balance")}
-          </div>
-          <div className="rounded-2xl border border-[#dfebfb] bg-white p-4 text-sm text-[#5a6f92]">
-            {t(lang, "Uzun vadeli kullanım değeri ve yatırım geri dönüşü", "Long-term usability value and investment return")}
-          </div>
-        </div>
       </section>
     </SiteShell>
   );

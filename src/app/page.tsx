@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { SiteShell } from "@/components/site-shell";
 import { PageSeoSchema } from "@/components/page-seo-schema";
+import { ProjectCard } from "@/components/project-card";
 import { getLang, t } from "@/lib/i18n";
 import { safeBlogs, safeProjects } from "@/lib/data";
 
@@ -189,35 +190,22 @@ export default async function Home() {
           </h2>
           <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {projects.slice(0, 4).map((project, index) => (
-              <Link
+              <ProjectCard
                 key={project._id}
-                href={project.link}
-                className="group overflow-hidden rounded-2xl border border-[#dbe5f4] bg-white transition hover:-translate-y-1 hover:shadow-lg hover:border-[#1a4f9d]"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <div className="relative h-36">
-                  <Image
-                    src={
-                      index % 2 === 0
-                        ? "https://images.unsplash.com/photo-1460574283810-2aab119d8511?w=1200&q=85"
-                        : "https://images.unsplash.com/photo-1479839672679-a46483c0e7c8?w=1200&q=85"
-                    }
-                    alt={`${project.name} — Yapı İstanbul projesi`}
-                    fill
-                    sizes="(min-width: 1280px) 25vw, (min-width: 640px) 50vw, 100vw"
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-linear-to-t from-[#061a45]/75 to-transparent" />
-                </div>
-                <div className="p-4">
-                  <h3 className="line-clamp-2 sm:line-clamp-1 font-semibold text-[#0c2c64] group-hover:text-[#1a4f9d]">{project.name}</h3>
-                  <p className="mt-1 text-sm text-[#4f6080] line-clamp-2 sm:line-clamp-3">
-                    {t(lang, "Proje detaylari icin baglantiya tiklayin.", "Click the link for project details.")}
-                  </p>
-                </div>
-              </Link>
+                project={project}
+                lang={lang}
+                index={index}
+                variant="compact"
+              />
             ))}
+          </div>
+          <div className="mt-6 text-center">
+            <Link
+              href="/projects"
+              className="inline-block rounded-full border border-[#c5d8f5] px-5 py-2 text-sm font-semibold text-[#0c2c64] hover:bg-[#edf4ff]"
+            >
+              {t(lang, "Tüm projeleri gör", "View all projects")}
+            </Link>
           </div>
         </section>
       )}
